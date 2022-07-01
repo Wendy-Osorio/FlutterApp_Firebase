@@ -12,6 +12,7 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  bool _loading = false;
   TapGestureRecognizer loginOnTap;
   @override
   void initState() {
@@ -94,7 +95,7 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
             SizedBox(height: 24),
             AppTextField(
-              hint: "Email ID",
+              hint: "Email ",
               icon: FlutterIcons.email,
             ),
             SizedBox(height: 12),
@@ -104,7 +105,12 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
             SizedBox(height: 12),
             AppTextField(
-              hint: "Full Name",
+              hint: "Confirm Password",
+              icon: FlutterIcons.lock,
+            ),
+            SizedBox(height: 12),
+            AppTextField(
+              hint: "User Name",
               icon: FlutterIcons.user,
             ),
             SizedBox(height: 15),
@@ -128,9 +134,21 @@ class _RegisterPageState extends State<RegisterPage> {
             FlatButton(
               color: Themes.colorPrimary,
               padding: EdgeInsets.all(16),
-              child: Text(
-                "Register",
-                style: TextStyle(color: Colors.white, fontSize: 16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text("Register",
+                      style: TextStyle(color: Colors.white, fontSize: 16)),
+                  if (_loading)
+                    Container(
+                      height: 20,
+                      width: 20,
+                      margin: const EdgeInsets.only(left: 20),
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                      ),
+                    )
+                ],
               ),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(
@@ -138,6 +156,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
               ),
               onPressed: () {
+                _login(context);
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => LoginPage(),
                 ));
@@ -165,5 +184,13 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
       ),
     );
+  }
+
+  void _login(BuildContext context) {
+    if (!_loading) {
+      setState(() {
+        _loading = true;
+      });
+    }
   }
 }

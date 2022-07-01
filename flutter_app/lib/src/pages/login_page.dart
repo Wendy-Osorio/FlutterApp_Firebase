@@ -13,6 +13,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  bool _loading = false;
   TapGestureRecognizer registerOnTap;
   @override
   void initState() {
@@ -51,7 +52,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             SizedBox(height: 12),
             AppTextField(
-              hint: "Email ID",
+              hint: "Email",
               icon: FlutterIcons.email,
             ),
             SizedBox(height: 12),
@@ -61,7 +62,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             SizedBox(height: 12),
             Text(
-              "Forgot Password",
+              "Forgot Password?",
               style: TextStyle(color: Themes.colorPrimary, fontSize: 15),
               textAlign: TextAlign.right,
             ),
@@ -69,9 +70,21 @@ class _LoginPageState extends State<LoginPage> {
             RaisedButton(
               color: Themes.colorPrimary,
               padding: EdgeInsets.all(16),
-              child: Text(
-                "Login",
-                style: TextStyle(color: Colors.white, fontSize: 16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text("Login",
+                      style: TextStyle(color: Colors.white, fontSize: 16)),
+                  if (_loading)
+                    Container(
+                      height: 20,
+                      width: 20,
+                      margin: const EdgeInsets.only(left: 20),
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                      ),
+                    )
+                ],
               ),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(
@@ -79,6 +92,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               onPressed: () {
+                _login(context);
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => HomePage(),
                 ));
@@ -137,5 +151,13 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  void _login(BuildContext context) {
+    if (!_loading) {
+      setState(() {
+        _loading = true;
+      });
+    }
   }
 }
